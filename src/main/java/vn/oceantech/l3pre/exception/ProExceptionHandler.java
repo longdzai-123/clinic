@@ -1,0 +1,21 @@
+package vn.oceantech.l3pre.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import vn.oceantech.l3pre.common.Response;
+
+@ControllerAdvice
+public class ProExceptionHandler {
+
+    @ExceptionHandler(DuplicateException.class)
+    protected ResponseEntity<Object> handleDuplicateException(DuplicateException duplicateException) {
+        return new ResponseEntity<>(Response.buildResponse(duplicateException.getErrorMessage()), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    protected ResponseEntity<Object> handleDuplicateException(NotFoundException notFoundException) {
+        return new ResponseEntity<>(Response.buildResponse(notFoundException.getErrorMessage()), HttpStatus.OK);
+    }
+}

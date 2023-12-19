@@ -1,0 +1,25 @@
+package vn.oceantech.l3pre.exception;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum ErrorMessage {
+    SUCCESS(200, "Success"),
+    BAD_REQUEST(400, "Bad request"),
+    INVALID_VALUE(400_001, "Invalid value"),
+    SAVE_DATABASE_ERROR(400_002, "Save database error"),
+    FORBIDDEN(403, "Forbidden"),
+    NOT_FOUND(404, "Resource not found"),
+    NOT_FOUND_USER(404_001, "The user isn't exist"),
+    DUPLICATE_DATA(405, "Data duplicate"),
+    DUPLICATE_EMAIL(405_001, "Your email is already in used, Please try another email ! "),
+    DUPLICATE_SCHEDULES(405_002, "Schedule already exists, please make another appointment! "),
+    DUPLICATE_DOCTOR_INFORMATION(405_003, "Doctor Information already exists, please make another appointment! "),
+    FILE_UPLOAD_ERROR(406, "File upload error"),
+    NOT_ALLOW(407, "Not allow"),
+    ;
+    private final int code;
+    private final String message;
+}
