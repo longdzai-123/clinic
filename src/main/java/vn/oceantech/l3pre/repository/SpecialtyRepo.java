@@ -7,6 +7,6 @@ import vn.oceantech.l3pre.entity.Specialty;
 import java.util.List;
 
 public interface SpecialtyRepo extends JpaRepository<Specialty, Integer> {
-    @Query(value = "SELECT * FROM specialties", nativeQuery = true)
+    @Query(value = "SELECT s FROM Specialty as s")
     List<Specialty> getAll();
 }

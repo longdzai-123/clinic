@@ -28,7 +28,7 @@ public class Booking {
     @Column(name = "patient_id")
     private Integer patientId;
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
     @Column(name = "time_type")
     private String timeType;
     @Column(name = "created_at")
@@ -46,7 +46,7 @@ public class Booking {
     @Column(name = "patient_gender")
     private String patientGender;
     @Column(name = "patient_birthday")
-    private Date patientBirthday;
+    private LocalDate patientBirthday;
     @Column(name = "verify_booking")
     private String verifyBooking;
 }

@@ -18,4 +18,9 @@ public class ProExceptionHandler {
     protected ResponseEntity<Object> handleDuplicateException(NotFoundException notFoundException) {
         return new ResponseEntity<>(Response.buildResponse(notFoundException.getErrorMessage()), HttpStatus.OK);
     }
+
+    @ExceptionHandler(ConfirmBookingException.class)
+    protected ResponseEntity<Object> handleConfirmBookingException(ConfirmBookingException confirmBookingException) {
+        return new ResponseEntity<>(Response.buildResponse(confirmBookingException.getErrorMessage()), HttpStatus.OK);
+    }
 }

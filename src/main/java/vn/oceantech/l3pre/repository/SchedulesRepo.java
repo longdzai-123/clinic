@@ -33,5 +33,4 @@ public interface SchedulesRepo extends JpaRepository<Schedules, Integer> {
             "WHERE doctor_id = :doctorId AND date = :date", nativeQuery = true)
     List<SchedulesPro> getSchedulesDoctorByDate(@Param("doctorId") Integer doctorId, @Param("date") Date date);
 
-
 }

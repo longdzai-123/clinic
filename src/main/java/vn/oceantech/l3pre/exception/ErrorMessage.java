@@ -17,8 +17,10 @@ public enum ErrorMessage {
     DUPLICATE_EMAIL(405_001, "Your email is already in used, Please try another email ! "),
     DUPLICATE_SCHEDULES(405_002, "Schedule already exists, please make another appointment! "),
     DUPLICATE_DOCTOR_INFORMATION(405_003, "Doctor Information already exists, please make another appointment! "),
+    DUPLICATE_BOOKING(405_004, "You have scheduled an appointment for this time period"),
     FILE_UPLOAD_ERROR(406, "File upload error"),
     NOT_ALLOW(407, "Not allow"),
+    CONFIRM_BOOKING_ERROR(408,"Email confirmation of failed medical appointment booking")
     ;
     private final int code;
     private final String message;

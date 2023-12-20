@@ -13,7 +13,7 @@ import vn.oceantech.l3pre.dto.UserDto;
 import vn.oceantech.l3pre.dto.UserPrincipal;
 import vn.oceantech.l3pre.utils.ConvertToJson;
 import vn.oceantech.l3pre.utils.FileStore;
-import vn.oceantech.l3pre.validation.UserValidator;
+import vn.oceantech.l3pre.validation.UserValidatorProcedure;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -27,7 +27,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserServiceProcedure implements UserDetailsService {
     private final EntityManager entityManager;
-    private final UserValidator userValidation;
+    private final UserValidatorProcedure userValidation;
 
     public UserDto create(UserDto userDto, MultipartFile image) {
         userDto.setCreatedAt(LocalDateTime.now());
