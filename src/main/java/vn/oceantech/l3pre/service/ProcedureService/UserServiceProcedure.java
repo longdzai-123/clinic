@@ -33,7 +33,7 @@ public class UserServiceProcedure implements UserDetailsService {
         userDto.setCreatedAt(LocalDateTime.now());
         userDto.setPassword(new BCryptPasswordEncoder(12).encode(userDto.getPassword()));
         if (image != null && !image.isEmpty()) {
-            userDto.setImage(FileStore.getFileName(image, "user-"));
+            userDto.setImage(FileStore.getNameFile(image, "user-"));
         }
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("create_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)
@@ -54,7 +54,7 @@ public class UserServiceProcedure implements UserDetailsService {
     public UserDto update(UserDto userDto, MultipartFile image) {
         userDto.setUpdatedAt(LocalDateTime.now());
         if (image != null && !image.isEmpty()) {
-            userDto.setImage(FileStore.getFileName(image, "user-"));
+            userDto.setImage(FileStore.getNameFile(image, "user-"));
         }
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("update_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)

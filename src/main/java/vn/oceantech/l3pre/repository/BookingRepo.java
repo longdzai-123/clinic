@@ -13,7 +13,7 @@ public interface BookingRepo extends JpaRepository<Booking, Integer> {
     @Query(value = "SELECT b FROM Booking as b WHERE b.verifyBooking = :token")
     Booking getByToken(String token);
 
-    @Query(value = "SELECT count(b)>0 FROM Booking as b WHERE b.verifyBooking = :token AND b.doctorId = :doctorId")
+    @Query(value = "SELECT count(b)>0 FROM Booking as b WHERE b.verifyBooking = :token AND b.doctorId = :doctorId AND b.statusId = 'S1' ")
     boolean existsByDoctorIdAndToken(String token, Integer doctorId);
 
     @Query("SELECT count(b)>0 FROM Booking as b WHERE b.doctorId = :doctorId " +

@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 public class FileStore {
@@ -12,7 +13,7 @@ public class FileStore {
     public static String getFileName(MultipartFile multipartFile, String prefix) {
         if (multipartFile != null && !multipartFile.isEmpty()) {
             try {
-                int index = multipartFile.getOriginalFilename().lastIndexOf(".");
+                int index = Objects.requireNonNull(multipartFile.getOriginalFilename()).lastIndexOf(".");
                 String ext = multipartFile.getOriginalFilename().substring(index);
                 String fileName = prefix + UUID.randomUUID() + ext;
                 File file = new File(UPLOAD_FOLDER + fileName);
@@ -21,6 +22,16 @@ public class FileStore {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        return null;
+    }
+
+    public static String getNameFile(MultipartFile multipartFile, String prefix) {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+
+            int index = Objects.requireNonNull(multipartFile.getOriginalFilename()).lastIndexOf(".");
+            String ext = multipartFile.getOriginalFilename().substring(index);
+            return prefix + UUID.randomUUID() + ext;
         }
         return null;
     }

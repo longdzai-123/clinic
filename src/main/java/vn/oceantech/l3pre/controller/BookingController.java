@@ -24,7 +24,7 @@ public class BookingController {
         return Response.buildResponse(bookingService.update(bookingDto));
     }
 
-    @PostMapping("/confirm-booking")
+    @PostMapping("/verify-booking-appointment")
     public Response<BookingDto> confirmBooking(@RequestParam("token") String token, @RequestParam("doctorId") Integer doctorId){
         return Response.buildResponse(bookingService.confirmBooking(token, doctorId));
     }
