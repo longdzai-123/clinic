@@ -17,6 +17,12 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     private final SpecialtyRepo specialtiesRepo;
 
     @Override
+    public SpecialtyDto create(SpecialtyDto specialtyDto) {
+
+        return null;
+    }
+
+    @Override
     public List<SpecialtyDto> getAll() {
         List<Specialty> specialties =  specialtiesRepo.getAll();
         List<SpecialtyDto> specialtyDtos = new ArrayList<>();

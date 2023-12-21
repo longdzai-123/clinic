@@ -1,7 +1,6 @@
 package vn.oceantech.l3pre.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import vn.oceantech.l3pre.dto.BookingDto;
@@ -18,7 +17,6 @@ import vn.oceantech.l3pre.service.UserService;
 import vn.oceantech.l3pre.validation.BookingValidator;
 
 import javax.persistence.NoResultException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -107,6 +105,4 @@ public class BookingServiceImpl implements BookingService {
             throw new ConfirmBookingException(ErrorMessage.CONFIRM_BOOKING_ERROR);
         }
     }
-
-
 }

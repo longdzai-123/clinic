@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -27,11 +29,17 @@ public class BookingDto {
     private String timeBooking;
     private LocalDateTime createdAt;
     private String imageRemedy;
+    @NotBlank
     private String patientName;
+    @NotBlank
     private String patientPhoneNumber;
+    @NotBlank
     private String patientAddress;
+    @NotBlank
     private String patientReason;
+    @NotBlank
     private String patientGender;
+    @NotBlank
     private LocalDate patientBirthday;
     private String email;
     private String verifyBooking;
