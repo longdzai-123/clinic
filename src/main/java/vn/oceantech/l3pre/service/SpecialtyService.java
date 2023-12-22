@@ -7,5 +7,7 @@ import java.util.List;
 public interface SpecialtyService {
 
     SpecialtyDto create(SpecialtyDto specialtyDto);
-    List<SpecialtyDto> getAll();
+    SpecialtyDto update(SpecialtyDto specialtyDto);
+    List<SpecialtyDto> getAll(Integer limit);
+    List<SpecialtyDto> getAllSpecialty();
 }
