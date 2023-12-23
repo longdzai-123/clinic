@@ -1,6 +1,7 @@
 package vn.oceantech.l3pre.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class UserDto {
     private Integer id;
     private String email;
+    @JsonIgnore
     private String password;
     private String firstName;
     private String lastName;

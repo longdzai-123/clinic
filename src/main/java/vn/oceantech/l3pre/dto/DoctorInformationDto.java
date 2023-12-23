@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DoctorInformationDto {
     private Integer id;
-    private Integer doctorId;
-    private Integer specialtyId;
-    private Integer clinicId;
+    private UserDto user;
+    private SpecialtyDto specialty;
+    private ClinicDto clinic;
     private String priceId;
     private String provinceId;
     private String paymentId;
