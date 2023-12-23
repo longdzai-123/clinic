@@ -4,12 +4,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.oceantech.l3pre.entity.DoctorInformation;
+import vn.oceantech.l3pre.entity.Specialty;
 import vn.oceantech.l3pre.projection.DoctorDetailsPro;
 import vn.oceantech.l3pre.projection.DoctorProfilePro;
 
-public interface DoctorInforRepo extends JpaRepository<DoctorInformation,Integer> {
+import java.util.List;
+
+public interface DoctorInforRepo extends JpaRepository<DoctorInformation, Integer> {
     DoctorInformation getById(int id);
+
+    @Query(value = "SELECT * FROM doctor_information WHERE doctor_id = :id", nativeQuery = true)
     DoctorInformation getByDoctorId(int id);
+
+    @Query(value = "SELECT * FROM doctor_information d WHERE d.specialty_id = :specialtyId " +
+            "AND (:provinceId is null or d.province_id = :provinceId) ", nativeQuery = true)
+    List<DoctorInformation> getBySpecialtyAndProvince(@Param("specialtyId") Integer specialtyId, @Param("provinceId") String provinceId);
 
     @Query(value = "SELECT " +
             "dif.id," +
@@ -75,10 +84,7 @@ public interface DoctorInforRepo extends JpaRepository<DoctorInformation,Integer
             "LEFT JOIN allcodes a3 ON dif.payment_id = a3.key_map " +
             "LEFT JOIN users u ON u.id = dif.doctor_id " +
             "LEFT JOIN allcodes a4 ON u.position_id = a4.key_map " +
-            "LEFT JOIN markdowns m ON dif.doctor_id = m.doctor_id "+
+            "LEFT JOIN markdowns m ON dif.doctor_id = m.doctor_id " +
             "WHERE dif.doctor_id = ?1 ", nativeQuery = true)
     DoctorProfilePro getDoctorProfileByDoctorId(@Param("doctorId") Integer doctorId);
-
-
-    boolean existsDoctorInformationByDoctorId(int doctorId);
 }

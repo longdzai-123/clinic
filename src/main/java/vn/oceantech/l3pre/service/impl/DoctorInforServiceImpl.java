@@ -3,22 +3,28 @@ package vn.oceantech.l3pre.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import vn.oceantech.l3pre.repository.DoctorInforRepo;
-import vn.oceantech.l3pre.repository.UserRepo;
 import vn.oceantech.l3pre.dto.DoctorExtraInformationDto;
 import vn.oceantech.l3pre.dto.DoctorInformationDetailDto;
 import vn.oceantech.l3pre.dto.DoctorInformationDto;
 import vn.oceantech.l3pre.dto.DoctorProfileDto;
+import vn.oceantech.l3pre.entity.Clinic;
 import vn.oceantech.l3pre.entity.DoctorInformation;
+import vn.oceantech.l3pre.entity.Specialty;
 import vn.oceantech.l3pre.entity.User;
+import vn.oceantech.l3pre.exception.ErrorMessage;
+import vn.oceantech.l3pre.exception.ProException;
 import vn.oceantech.l3pre.projection.DoctorDetailsPro;
 import vn.oceantech.l3pre.projection.DoctorProfilePro;
+import vn.oceantech.l3pre.repository.DoctorInforRepo;
+import vn.oceantech.l3pre.repository.UserRepo;
 import vn.oceantech.l3pre.service.DoctorInforService;
 import vn.oceantech.l3pre.validation.DoctorInforValidator;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +34,32 @@ public class DoctorInforServiceImpl implements DoctorInforService {
     private final UserRepo userRepo;
 
     @Override
-    public DoctorInformation create(DoctorInformationDto doctorInformationDto) {
-        doctorInforValidator.existDoctorInfor(doctorInformationDto.getDoctorId());
+    public DoctorInformationDto create(DoctorInformationDto doctorInformationDto) {
+        doctorInforValidator.existDoctorInfor(doctorInformationDto.getUser().getId());
         doctorInformationDto.setCount(0);
         DoctorInformation doctorInformation = new ModelMapper().map(doctorInformationDto, DoctorInformation.class);
         doctorInforRepo.save(doctorInformation);
-        return doctorInforRepo.getById(doctorInformation.getId());
+        return new ModelMapper().map(doctorInformation, DoctorInformationDto.class);
     }
 
     @Override
-    public DoctorInformation update(DoctorInformationDto doctorInformationDto) {
-        DoctorInformation doctorInformation = doctorInforRepo.getByDoctorId(doctorInformationDto.getDoctorId());
-        doctorInformation.setSpecialtyId(doctorInformationDto.getSpecialtyId());
-        doctorInformation.setClinicId(doctorInformationDto.getClinicId());
+    public DoctorInformationDto update(DoctorInformationDto doctorInformationDto) {
+        DoctorInformation doctorInformation;
+        if (doctorInforRepo.getByDoctorId(doctorInformationDto.getUser().getId()) != null) {
+            doctorInformation = doctorInforRepo.getByDoctorId(doctorInformationDto.getUser().getId());
+        } else {
+            throw new ProException(ErrorMessage.DUPLICATE_DOCTOR_INFORMATION);
+        }
+        if (!Objects.isNull(doctorInformationDto.getSpecialty())) {
+            Specialty specialty = new Specialty();
+            specialty.setId(doctorInformationDto.getSpecialty().getId());
+            doctorInformation.setSpecialty(specialty);
+        }
+        if (!Objects.isNull(doctorInformationDto.getClinic())) {
+            Clinic clinic = new Clinic();
+            clinic.setId(doctorInformationDto.getClinic().getId());
+            doctorInformation.setClinic(clinic);
+        }
         doctorInformation.setPriceId(doctorInformationDto.getPriceId());
         doctorInformation.setPriceId(doctorInformationDto.getPriceId());
         doctorInformation.setProvinceId(doctorInformationDto.getProvinceId());
@@ -50,12 +69,25 @@ public class DoctorInforServiceImpl implements DoctorInforService {
         doctorInformation.setNote(doctorInformationDto.getNote());
         doctorInformation.setUpdatedAt(LocalDateTime.now());
         doctorInforRepo.save(doctorInformation);
-        return doctorInforRepo.getById(doctorInformation.getId());
+        return new ModelMapper().map(doctorInformation, DoctorInformationDto.class);
     }
 
     @Override
-    public DoctorInformation getByDoctorId(int id) {
-        return doctorInforRepo.getByDoctorId(id);
+    public List<DoctorInformationDto> getBySpecialtyAndProvince(int specialtyId, String provinceId) {
+        if(provinceId.isEmpty()){
+            provinceId = null;
+        }
+        List<DoctorInformation> doctorInformations = doctorInforRepo.getBySpecialtyAndProvince(specialtyId, provinceId);
+        List<DoctorInformationDto> doctorInformationDtos = doctorInformations.stream()
+                .map(p -> new ModelMapper().map(p, DoctorInformationDto.class)).collect(Collectors.toList());
+        return doctorInformationDtos;
+    }
+
+
+    @Override
+    public DoctorInformationDto getByDoctorId(int id) {
+        DoctorInformation doctorInformation = doctorInforRepo.getByDoctorId(id);
+        return new ModelMapper().map(doctorInformation, DoctorInformationDto.class);
     }
 
     @Override
@@ -159,6 +191,7 @@ public class DoctorInforServiceImpl implements DoctorInforService {
         doctorExtraInformationDto.setProvinceVi(doctorProfilePro.getPaymentVi());
         return doctorExtraInformationDto;
     }
+
 
     public String encodeToBase64Image(byte[] image) {
         String base64String = Base64.getEncoder().encodeToString(image);

@@ -13,4 +13,6 @@ public interface SpecialtyRepo extends JpaRepository<Specialty, Integer> {
 
     @Query("SELECT s FROM Specialty s")
     List<Specialty> getAllSpecialty();
+
+
 }
