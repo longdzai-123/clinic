@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import vn.oceantech.l3pre.dto.SpecialtyDto;
 import vn.oceantech.l3pre.entity.Specialty;
 import vn.oceantech.l3pre.exception.ErrorMessage;
+import vn.oceantech.l3pre.exception.NotFoundException;
 import vn.oceantech.l3pre.exception.ProException;
 import vn.oceantech.l3pre.repository.SpecialtyRepo;
 import vn.oceantech.l3pre.service.SpecialtyService;
@@ -40,13 +41,22 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         return new ModelMapper().map(specialty, SpecialtyDto.class);
     }
 
+    @Override
+    public Boolean deleteById(int id) {
+        Specialty specialty = specialtiesRepo.findById(id).
+                orElseThrow(() -> new ProException(ErrorMessage.NOT_FOUND_SPECIALTY));
+        if (!Objects.isNull(specialty)) {
+            specialtiesRepo.deleteById(id);
+        }
+        return true;
+    }
 
     @Override
-    public List<SpecialtyDto> getAll(Integer limit) {
+    public List<SpecialtyDto> getAllByLimit(Integer limit) {
         if (Objects.isNull(limit)) {
             limit = 10;
         }
-        List<Specialty> specialties = specialtiesRepo.getAll(limit);
+        List<Specialty> specialties = specialtiesRepo.getAllByLimit(limit);
         List<SpecialtyDto> specialtyDtos = new ArrayList<>();
         for (Specialty specialty : specialties) {
             SpecialtyDto specialtyDto = new ModelMapper().map(specialty, SpecialtyDto.class);
@@ -59,6 +69,12 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     public List<SpecialtyDto> getAllSpecialty() {
         List<Specialty> specialties = specialtiesRepo.getAllSpecialty();
         return specialties.stream().map(p -> new ModelMapper().map(p, SpecialtyDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public SpecialtyDto getById(int id) {
+        Specialty specialty = specialtiesRepo.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_SPECIALTY));
+        return new ModelMapper().map(specialty, SpecialtyDto.class);
     }
 
     private void mapDtoToEntity(SpecialtyDto specialtyDto, Specialty specialty) {
