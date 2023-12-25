@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Lob;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SpecialtyDto {
     private Integer id;
     private String descriptionHTML;
     private String descriptionMarkdown;
+    @Lob
     private String image;
     private String name;
     private LocalDateTime createdAt;

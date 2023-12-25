@@ -39,7 +39,6 @@ public class BookingDto {
     private String patientReason;
     @NotBlank
     private String patientGender;
-    @NotBlank
     private LocalDate patientBirthday;
     private String email;
     private String verifyBooking;

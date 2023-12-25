@@ -24,13 +24,23 @@ public class SpecialtyController {
         return Response.buildResponse(specialtyService.update(specialtyDto));
     }
 
+    @DeleteMapping("/{id}")
+    public Response<Boolean> deleteById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(specialtyService.deleteById(id));
+    }
+
     @GetMapping
-    public Response<List<SpecialtyDto>> getAll(@RequestParam("limit") Integer limit) {
-        return Response.buildResponse(specialtyService.getAll(limit));
+    public Response<List<SpecialtyDto>> getAllByLimit(@RequestParam("limit") Integer limit) {
+        return Response.buildResponse(specialtyService.getAllByLimit(limit));
     }
 
     @GetMapping("/all")
     public Response<List<SpecialtyDto>> getAllSpecialty() {
         return Response.buildResponse(specialtyService.getAllSpecialty());
+    }
+
+    @GetMapping("/{id}")
+    public Response<SpecialtyDto> getById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(specialtyService.getById(id));
     }
 }
