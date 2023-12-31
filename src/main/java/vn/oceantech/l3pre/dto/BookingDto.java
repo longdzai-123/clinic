@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import vn.oceantech.l3pre.entity.User;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ import java.util.Date;
 public class BookingDto {
     private Integer id;
     private String statusId;
-    private Integer doctorId;
+    private UserDto user;
     private Integer patientId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;

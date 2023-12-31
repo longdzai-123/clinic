@@ -9,4 +9,6 @@ import java.util.List;
 public interface ClinicRepo extends JpaRepository<Clinic, Integer> {
     @Query(value = "SELECT * FROM clinics", nativeQuery = true)
     List<Clinic> getAll();
+
+    Clinic getById(int id);
 }

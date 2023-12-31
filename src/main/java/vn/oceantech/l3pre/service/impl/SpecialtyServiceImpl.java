@@ -77,6 +77,13 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         return new ModelMapper().map(specialty, SpecialtyDto.class);
     }
 
+    @Override
+    public List<SpecialtyDto> search(String keyWord) {
+        List<Specialty> specialties = specialtiesRepo.search(keyWord);
+        return specialties.stream().map(specialty -> new ModelMapper()
+                .map(specialty, SpecialtyDto.class)).collect(Collectors.toList());
+    }
+
     private void mapDtoToEntity(SpecialtyDto specialtyDto, Specialty specialty) {
         if (!Objects.isNull(specialtyDto.getDescriptionHTML())) {
             specialty.setDescriptionHTML(specialtyDto.getDescriptionHTML());

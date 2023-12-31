@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import vn.oceantech.l3pre.dto.UserDto;
+import vn.oceantech.l3pre.dto.UserProDto;
 import vn.oceantech.l3pre.dto.UserPrincipal;
 import vn.oceantech.l3pre.utils.ConvertToJson;
 import vn.oceantech.l3pre.utils.FileStore;
@@ -29,7 +29,7 @@ public class UserServiceProcedure implements UserDetailsService {
     private final EntityManager entityManager;
     private final UserValidatorProcedure userValidation;
 
-    public UserDto create(UserDto userDto, MultipartFile image) {
+    public UserProDto create(UserProDto userDto, MultipartFile image) {
         userDto.setCreatedAt(LocalDateTime.now());
         userDto.setPassword(new BCryptPasswordEncoder(12).encode(userDto.getPassword()));
         if (image != null && !image.isEmpty()) {
@@ -38,20 +38,20 @@ public class UserServiceProcedure implements UserDetailsService {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("create_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)
                 .setParameter("userJSON", ConvertToJson.toJsonString(userDto));
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
-    public UserDto managerCreateUser(UserDto userDto) {
+    public UserProDto managerCreateUser(UserProDto userDto) {
         userValidation.checkDuplicateEmail(userDto.getEmail());
         userDto.setCreatedAt(LocalDateTime.now());
         userDto.setPassword(new BCryptPasswordEncoder(12).encode(userDto.getPassword()));
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("create_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)
                 .setParameter("userJSON", ConvertToJson.toJsonString(userDto));
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
-    public UserDto update(UserDto userDto, MultipartFile image) {
+    public UserProDto update(UserProDto userDto, MultipartFile image) {
         userDto.setUpdatedAt(LocalDateTime.now());
         if (image != null && !image.isEmpty()) {
             userDto.setImage(FileStore.getNameFile(image, "user-"));
@@ -59,15 +59,15 @@ public class UserServiceProcedure implements UserDetailsService {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("update_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)
                 .setParameter("userJSON", ConvertToJson.toJsonString(userDto));
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
-    public UserDto managerUpdateUser(UserDto userDto) {
+    public UserProDto managerUpdateUser(UserProDto userDto) {
         userDto.setUpdatedAt(LocalDateTime.now());
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("update_user", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userJSON", String.class, ParameterMode.IN)
                 .setParameter("userJSON", ConvertToJson.toJsonString(userDto));
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
     public String deleteById(int id) {
@@ -79,21 +79,21 @@ public class UserServiceProcedure implements UserDetailsService {
         return String.valueOf(query.getOutputParameterValue("message"));
     }
 
-    public UserDto getUserById(int id) {
+    public UserProDto getUserById(int id) {
         userValidation.existsUser(id);
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_user_by_id", "UserSimpleMapper")
                 .registerStoredProcedureParameter("userId", Integer.class, ParameterMode.IN)
                 .setParameter("userId", id);
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
-    public List<UserDto> getAllUser() {
+    public List<UserProDto> getAllUser() {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_all_user", "UserSimpleMapper");
         List<?> list = query.getResultList();
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserProDto> userDtos = new ArrayList<>();
         for (Object object : list) {
-            if (object instanceof UserDto) {
-                userDtos.add((UserDto) object);
+            if (object instanceof UserProDto) {
+                userDtos.add((UserProDto) object);
             }
         }
         return userDtos;
@@ -101,7 +101,7 @@ public class UserServiceProcedure implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserDto userDto = getUserByEmail(email);
+        UserProDto userDto = getUserByEmail(email);
         if (Objects.isNull(userDto)) {
             throw new UsernameNotFoundException("not found");
         }
@@ -112,21 +112,21 @@ public class UserServiceProcedure implements UserDetailsService {
         return new UserPrincipal(userDto.getId(), userDto.getEmail(), userDto.getPassword(), authorities);
     }
 
-    public UserDto getUserByEmail(String email) {
+    public UserProDto getUserByEmail(String email) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_user_by_email", "UserMapper")
                 .registerStoredProcedureParameter("email", String.class, ParameterMode.IN)
                 .setParameter("email", email);
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 
     public UserPrincipal getUserLogin() {
         return (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public UserDto getUserSimpleByEmail(String email) {
+    public UserProDto getUserSimpleByEmail(String email) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_user_by_email", "UserSimpleMapper")
                 .registerStoredProcedureParameter("email", String.class, ParameterMode.IN)
                 .setParameter("email", email);
-        return (UserDto) query.getSingleResult();
+        return (UserProDto) query.getSingleResult();
     }
 }

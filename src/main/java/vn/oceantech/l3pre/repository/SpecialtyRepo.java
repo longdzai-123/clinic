@@ -13,4 +13,7 @@ public interface SpecialtyRepo extends JpaRepository<Specialty, Integer> {
 
     @Query("SELECT s FROM Specialty s")
     List<Specialty> getAllSpecialty();
+
+    @Query(value = "SELECT * FROM specialties as s WHERE s.name LIKE CONCAT('%',:keyWord,'%')", nativeQuery = true)
+    List<Specialty> search(String keyWord);
 }

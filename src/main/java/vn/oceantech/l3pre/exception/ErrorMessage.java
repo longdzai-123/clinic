@@ -14,6 +14,7 @@ public enum ErrorMessage {
     NOT_FOUND(404, "Resource not found"),
     NOT_FOUND_USER(404_001, "The user isn't exist"),
     NOT_FOUND_SPECIALTY(404_002, "The specialty isn't exist"),
+    NOT_FOUND_CLINIC(404_003, "The clinic isn't exist"),
     NOT_FOUND_DOCTOR_INFORMATION(404_003, "The doctor information isn't exist"),
     DUPLICATE_DATA(405, "Data duplicate"),
     DUPLICATE_EMAIL(405_001, "Your email is already in used, Please try another email ! "),

@@ -3,10 +3,8 @@ package vn.oceantech.l3pre.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import vn.oceantech.l3pre.dto.DoctorExtraInformationDto;
-import vn.oceantech.l3pre.dto.DoctorInformationDetailDto;
-import vn.oceantech.l3pre.dto.DoctorInformationDto;
-import vn.oceantech.l3pre.dto.DoctorProfileDto;
+import vn.oceantech.l3pre.dto.*;
+import vn.oceantech.l3pre.dto.Response.DoctorResponseDto;
 import vn.oceantech.l3pre.entity.Clinic;
 import vn.oceantech.l3pre.entity.DoctorInformation;
 import vn.oceantech.l3pre.entity.Specialty;
@@ -15,12 +13,14 @@ import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.exception.ProException;
 import vn.oceantech.l3pre.projection.DoctorDetailsPro;
 import vn.oceantech.l3pre.projection.DoctorProfilePro;
+import vn.oceantech.l3pre.projection.TopDoctorPro;
 import vn.oceantech.l3pre.repository.DoctorInforRepo;
 import vn.oceantech.l3pre.repository.UserRepo;
 import vn.oceantech.l3pre.service.DoctorInforService;
 import vn.oceantech.l3pre.validation.DoctorInforValidator;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +74,7 @@ public class DoctorInforServiceImpl implements DoctorInforService {
 
     @Override
     public List<DoctorInformationDto> getBySpecialtyAndProvince(int specialtyId, String provinceId) {
-        if(provinceId.isEmpty()){
+        if (provinceId.isEmpty()) {
             provinceId = null;
         }
         List<DoctorInformation> doctorInformations = doctorInforRepo.getBySpecialtyAndProvince(specialtyId, provinceId);
@@ -149,7 +149,64 @@ public class DoctorInforServiceImpl implements DoctorInforService {
             return new DoctorProfileDto(this.doctorExtraInforDto(doctorProfilePro), this.doctorProfileDto(doctorProfilePro));
         }
         return null;
+    }
 
+    @Override
+    public List<DoctorResponseDto> getTopDoctorHome(int size) {
+        List<TopDoctorPro> topDoctorPros = doctorInforRepo.getTopDoctor(size);
+        List<DoctorResponseDto> topDoctorResponseDtos = new ArrayList<>();
+        for (TopDoctorPro topDoctorPro : topDoctorPros) {
+            User user = userRepo.getById(topDoctorPro.getId());
+            DoctorResponseDto topDoctorResponseDto = new DoctorResponseDto();
+            topDoctorResponseDto.setId(topDoctorPro.getId());
+            topDoctorResponseDto.setEmail(topDoctorPro.getEmail());
+            topDoctorResponseDto.setFirstName(topDoctorPro.getFirstName());
+            topDoctorResponseDto.setLastName(topDoctorPro.getLastName());
+            topDoctorResponseDto.setAddress(topDoctorPro.getAddress());
+            topDoctorResponseDto.setGender(topDoctorPro.getGender());
+            topDoctorResponseDto.setRoleId(topDoctorPro.getRoleId());
+            topDoctorResponseDto.setPhoneNumber(topDoctorPro.getPhoneNumber());
+            topDoctorResponseDto.setPositionId(topDoctorPro.getPositionId());
+            topDoctorResponseDto.setImage(user.getImage());
+            topDoctorResponseDto.setCreatedAt(topDoctorPro.getCreatedAt());
+            topDoctorResponseDto.setUpdatedAt(topDoctorPro.getUpdatedAt());
+            topDoctorResponseDto.setTotalCost(topDoctorPro.getTotalCost());
+            topDoctorResponseDto.setTotalRevenue(topDoctorPro.getTotalRevenue());
+            topDoctorResponseDto.setValueEn(topDoctorPro.getValueEn());
+            topDoctorResponseDto.setValueVi(topDoctorPro.getValueVi());
+            topDoctorResponseDto.setNameSpecialty(topDoctorPro.getNameSpecialty());
+            topDoctorResponseDtos.add(topDoctorResponseDto);
+        }
+        return topDoctorResponseDtos;
+    }
+
+    @Override
+    public List<DoctorResponseDto> getAllDoctor() {
+        List<TopDoctorPro> topDoctorPros = doctorInforRepo.getAllDoctor();
+        List<DoctorResponseDto> doctorResponseDtos = new ArrayList<>();
+        for (TopDoctorPro topDoctorPro : topDoctorPros) {
+            User user = userRepo.getById(topDoctorPro.getId());
+            DoctorResponseDto doctorResponseDto = new DoctorResponseDto();
+            doctorResponseDto.setId(topDoctorPro.getId());
+            doctorResponseDto.setEmail(topDoctorPro.getEmail());
+            doctorResponseDto.setFirstName(topDoctorPro.getFirstName());
+            doctorResponseDto.setLastName(topDoctorPro.getLastName());
+            doctorResponseDto.setAddress(topDoctorPro.getAddress());
+            doctorResponseDto.setGender(topDoctorPro.getGender());
+            doctorResponseDto.setRoleId(topDoctorPro.getRoleId());
+            doctorResponseDto.setPhoneNumber(topDoctorPro.getPhoneNumber());
+            doctorResponseDto.setPositionId(topDoctorPro.getPositionId());
+            doctorResponseDto.setImage(user.getImage());
+            doctorResponseDto.setCreatedAt(topDoctorPro.getCreatedAt());
+            doctorResponseDto.setUpdatedAt(topDoctorPro.getUpdatedAt());
+            doctorResponseDto.setTotalCost(topDoctorPro.getTotalCost());
+            doctorResponseDto.setTotalRevenue(topDoctorPro.getTotalRevenue());
+            doctorResponseDto.setValueEn(topDoctorPro.getValueEn());
+            doctorResponseDto.setValueVi(topDoctorPro.getValueVi());
+            doctorResponseDto.setNameSpecialty(topDoctorPro.getNameSpecialty());
+            doctorResponseDtos.add(doctorResponseDto);
+        }
+        return doctorResponseDtos;
     }
 
     private DoctorProfileDto doctorProfileDto(DoctorProfilePro doctorProfilePro) {

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DoctorInformationDto {
     private Integer id;
-    private UserDto user;
+    private UserProDto user;
     private SpecialtyDto specialty;
     private ClinicDto clinic;
     private String priceId;
