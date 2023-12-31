@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.oceantech.l3pre.common.Response;
 import vn.oceantech.l3pre.dto.AllCodesDto;
+import vn.oceantech.l3pre.service.AllCodesService;
 import vn.oceantech.l3pre.service.ProcedureService.AllCodeService;
 
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/allcodes")
 public class AllCodeController {
-    private final AllCodeService allCodeService;
+    private final AllCodesService allCodesService;
 
     @GetMapping
     public Response<List<AllCodesDto>> getAllCodeByType(@RequestParam("type") String type){
-        return Response.buildResponse(allCodeService.getAllCodeByType(type));
+        return Response.buildResponse(allCodesService.getAllCodeByType(type));
     }
 }

@@ -31,7 +31,7 @@ public class EmailSender {
                             "<div><b>Thời gian:" + bookingDto.getTimeBooking() + "</b></div>" +
                             "<div><b>Bác sỹ:" + doctorName + "</b></div>" +
                             "<p>Nếu các thông tin trên là đúng sự thật, vui lòng click vào đường link bên dưới để xác nhận</p>" +
-                            "<a href=" + UrlConfirmBooking(bookingDto.getVerifyBooking(), bookingDto.getDoctorId()) + ">Xác nhận thông tin ở đây</a>" +
+                            "<a href=" + UrlConfirmBooking(bookingDto.getVerifyBooking(), bookingDto.getUser().getId()) + ">Xác nhận thông tin ở đây</a>" +
                             "<div>Xin chân thành cảm ơn</div>"
                     , true);
             javaMailSender.send(message);

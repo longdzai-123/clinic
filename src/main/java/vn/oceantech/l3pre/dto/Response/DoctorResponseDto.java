@@ -1,24 +1,15 @@
-package vn.oceantech.l3pre.dto;
+package vn.oceantech.l3pre.dto.Response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
-@Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserDto {
+@Setter
+public class DoctorResponseDto {
     private Integer id;
 
     private String email;
-
-    @JsonIgnore
-    private String password;
 
     private String firstName;
 
@@ -43,4 +34,12 @@ public class UserDto {
     private Integer totalCost;
 
     private Integer totalRevenue;
+
+    private String valueEn;
+
+    private String valueVi;
+
+    private String nameSpecialty;
+
+
 }

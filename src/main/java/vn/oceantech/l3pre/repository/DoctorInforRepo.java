@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.oceantech.l3pre.entity.DoctorInformation;
-import vn.oceantech.l3pre.entity.Specialty;
 import vn.oceantech.l3pre.projection.DoctorDetailsPro;
 import vn.oceantech.l3pre.projection.DoctorProfilePro;
+import vn.oceantech.l3pre.projection.TopDoctorPro;
 
 import java.util.List;
 
@@ -87,4 +87,62 @@ public interface DoctorInforRepo extends JpaRepository<DoctorInformation, Intege
             "LEFT JOIN markdowns m ON dif.doctor_id = m.doctor_id " +
             "WHERE dif.doctor_id = ?1 ", nativeQuery = true)
     DoctorProfilePro getDoctorProfileByDoctorId(@Param("doctorId") Integer doctorId);
+
+    @Query(value = "SELECT " +
+            "u.id," +
+            "u.email," +
+            "u.first_name as firstName," +
+            "u.last_name as lastName," +
+            "u.address," +
+            "u.gender," +
+            "u.role_id as roleId," +
+            "u.phone_number as phoneNumber," +
+            "u.position_id as positionId," +
+            "u.image," +
+            "u.created_at as createdAt," +
+            "u.updated_at as updatedAt," +
+            "u.total_cost as totalCost," +
+            "u.total_revenue as totalRevenue," +
+            "a.value_en as valueEn," +
+            "a.value_vi as valueVi," +
+            "s.name as nameSpecialty " +
+            "FROM " +
+            "users u " +
+            "LEFT JOIN allcodes as a ON a.key_map = u.position_id " +
+            "LEFT JOIN doctor_information as d ON d.doctor_id = u.id " +
+            "LEFT JOIN specialties as s ON s.id = d.specialty_id " +
+            "WHERE " +
+            "u.role_id = 'R2' " +
+            "ORDER BY u.created_at DESC " +
+            "LIMIT :limit", nativeQuery = true)
+    List<TopDoctorPro> getTopDoctor(@Param("limit") Integer limit);
+
+    @Query(value = "SELECT " +
+            "u.id," +
+            "u.email," +
+            "u.first_name as firstName," +
+            "u.last_name as lastName," +
+            "u.address," +
+            "u.gender," +
+            "u.role_id as roleId," +
+            "u.phone_number as phoneNumber," +
+            "u.position_id as positionId," +
+            "u.image," +
+            "u.created_at as createdAt," +
+            "u.updated_at as updatedAt," +
+            "u.total_cost as totalCost," +
+            "u.total_revenue as totalRevenue," +
+            "a.value_en as valueEn," +
+            "a.value_vi as valueVi," +
+            "s.name as nameSpecialty " +
+            "FROM " +
+            "users u " +
+            "LEFT JOIN allcodes as a ON a.key_map = u.position_id " +
+            "LEFT JOIN doctor_information as d ON d.doctor_id = u.id " +
+            "LEFT JOIN specialties as s ON s.id = d.specialty_id " +
+            "WHERE " +
+            "u.role_id = 'R2' " +
+            "ORDER BY u.created_at DESC ", nativeQuery = true)
+    List<TopDoctorPro> getAllDoctor();
+
 }

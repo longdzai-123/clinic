@@ -43,4 +43,9 @@ public class SpecialtyController {
     public Response<SpecialtyDto> getById(@PathVariable("id") Integer id) {
         return Response.buildResponse(specialtyService.getById(id));
     }
+
+    @GetMapping("/search")
+    public Response<List<SpecialtyDto>> getById(@RequestParam("keyWord") String keyWord) {
+        return Response.buildResponse(specialtyService.search(keyWord));
+    }
 }

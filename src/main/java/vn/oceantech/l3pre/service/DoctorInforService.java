@@ -1,9 +1,7 @@
 package vn.oceantech.l3pre.service;
 
-import vn.oceantech.l3pre.dto.DoctorExtraInformationDto;
-import vn.oceantech.l3pre.dto.DoctorInformationDetailDto;
-import vn.oceantech.l3pre.dto.DoctorInformationDto;
-import vn.oceantech.l3pre.dto.DoctorProfileDto;
+import vn.oceantech.l3pre.dto.*;
+import vn.oceantech.l3pre.dto.Response.DoctorResponseDto;
 
 import java.util.List;
 
@@ -21,4 +19,9 @@ public interface DoctorInforService {
     DoctorExtraInformationDto getDoctorExtraInforByDoctorId(int id);
 
     DoctorProfileDto getDoctorProfileByDoctorId(int id);
+
+    List<DoctorResponseDto> getTopDoctorHome(int size);
+
+    List<DoctorResponseDto> getAllDoctor();
+
 }

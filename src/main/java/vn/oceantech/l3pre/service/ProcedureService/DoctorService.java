@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.oceantech.l3pre.dto.AllCodesDto;
 import vn.oceantech.l3pre.dto.MarkdownsDto;
-import vn.oceantech.l3pre.dto.UserDto;
+import vn.oceantech.l3pre.dto.UserProDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -18,46 +18,46 @@ import java.util.Objects;
 public class DoctorService {
     private final EntityManager entityManager;
 
-    public List<UserDto> getTopDoctorHome(Integer size) {
+    public List<UserProDto> getTopDoctorHome(Integer size) {
         if (Objects.isNull(size)) {
             size = 10;
         }
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_top_doctor_home", "DoctorMapper")
                 .registerStoredProcedureParameter("size", Integer.class, ParameterMode.IN)
                 .setParameter("size", size);
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserProDto> userDtos = new ArrayList<>();
         List<Object[]> objects = query.getResultList();
         for (Object[] object : objects) {
-            userDtos.add(new UserDto((UserDto) object[0], (AllCodesDto) object[1]));
+            userDtos.add(new UserProDto((UserProDto) object[0], (AllCodesDto) object[1]));
         }
         return userDtos;
     }
 
-    public List<UserDto> getDetailsAllDoctor() {
+    public List<UserProDto> getDetailsAllDoctor() {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_details_all_doctor", "DoctorDetailsMapper");
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserProDto> userDtos = new ArrayList<>();
         List<Object[]> objects = query.getResultList();
         for (Object[] object : objects) {
-            userDtos.add(new UserDto((UserDto) object[0], (MarkdownsDto) object[1]));
+            userDtos.add(new UserProDto((UserProDto) object[0], (MarkdownsDto) object[1]));
         }
         return userDtos;
     }
 
-    public UserDto getDetailsDoctorById(int id) {
+    public UserProDto getDetailsDoctorById(int id) {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_details_doctor_by_id", "DoctorDetailsMapper")
                 .registerStoredProcedureParameter("doctorId", Integer.class, ParameterMode.IN)
                 .setParameter("doctorId", id);
         Object[] object = (Object[]) query.getSingleResult();
-        return new UserDto((UserDto) object[0], (MarkdownsDto) object[1], (AllCodesDto) object[2]);
+        return new UserProDto((UserProDto) object[0], (MarkdownsDto) object[1], (AllCodesDto) object[2]);
     }
 
-    public List<UserDto> getAllDoctor() {
+    public List<UserProDto> getAllDoctor() {
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_all_doctor", "DoctorSimpleMapper");
         List<?> list = query.getResultList();
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserProDto> userDtos = new ArrayList<>();
         for (Object object : list) {
-            if (object instanceof UserDto) {
-                userDtos.add((UserDto) object);
+            if (object instanceof UserProDto) {
+                userDtos.add((UserProDto) object);
             }
         }
         return userDtos;

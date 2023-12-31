@@ -36,7 +36,7 @@ public class BookingServiceImpl implements BookingService {
             userDto.setEmail(bookingDto.getEmail());
             userDto.setRoleId("R3"); // set role patient
             userDto.setFirstName(bookingDto.getPatientName());
-            int patientId = userService.create(userDto).getId();
+            int patientId = userService.managerCreateUser(userDto).getId();
             bookingDto.setPatientId(patientId);
         } else {
             bookingDto.setPatientId(userRepo.getPatientIdByEmail(bookingDto.getEmail()));
@@ -48,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setVerifyBooking(verifyBooking);
         bookingValidator.checkDuplicateBooking(booking);
         bookingRepo.save(booking);
-        User doctor = userRepo.getById(bookingDto.getDoctorId());
+        User doctor = userRepo.getById(bookingDto.getUser().getId());
         String doctorName = doctor.getLastName() + " " + doctor.getFirstName();
         bookingDto.setId(booking.getId());
         bookingDto.setVerifyBooking(verifyBooking);
@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto confirmBooking(String token, Integer doctorId) {
         if (token != null && doctorId != null) {
-            if (bookingRepo.existsByDoctorIdAndToken(token, doctorId)) {
+            if (bookingRepo.existsByDoctorIdAndToken(token, doctorId) == 1) {
                 Booking booking = bookingRepo.getByToken(token);
                 booking.setStatusId("S2");
                 bookingRepo.save(booking);

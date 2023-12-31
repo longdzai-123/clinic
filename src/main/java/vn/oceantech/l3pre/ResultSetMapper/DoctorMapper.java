@@ -1,8 +1,7 @@
 package vn.oceantech.l3pre.ResultSetMapper;
 
 import vn.oceantech.l3pre.dto.AllCodesDto;
-import vn.oceantech.l3pre.dto.MarkdownsDto;
-import vn.oceantech.l3pre.dto.UserDto;
+import vn.oceantech.l3pre.dto.UserProDto;
 
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @SqlResultSetMapping(
         name = "DoctorMapper",
         classes = {@ConstructorResult(
-                targetClass = UserDto.class,
+                targetClass = UserProDto.class,
                 columns = {
                         @ColumnResult(name = "id", type = Integer.class),
                         @ColumnResult(name = "email", type = String.class),

@@ -17,4 +17,6 @@ public interface SpecialtyService {
 
     SpecialtyDto getById(int id);
 
+    List<SpecialtyDto> search(String keyWord);
+
 }
