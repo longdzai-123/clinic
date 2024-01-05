@@ -14,7 +14,7 @@ import java.util.List;
 public class ClinicController {
     private final ClinicService clinicService;
 
-    @GetMapping
+    @GetMapping("all")
     public Response<List<ClinicDto>> getAll() {
         return Response.buildResponse(clinicService.getAll());
     }
@@ -32,6 +32,11 @@ public class ClinicController {
     @GetMapping("/{id}")
     public Response<ClinicDto> getById(@PathVariable("id") Integer id) {
         return Response.buildResponse(clinicService.getById(id));
+    }
+
+    @GetMapping
+    public Response<List<ClinicDto>> getAllByLimit(@RequestParam("limit") Integer limit) {
+        return Response.buildResponse(clinicService.getAllByLimit(limit));
     }
 
 }

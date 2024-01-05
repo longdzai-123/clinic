@@ -1,19 +1,14 @@
 package vn.oceantech.l3pre.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import vn.oceantech.l3pre.entity.User;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -22,11 +17,11 @@ import java.util.Date;
 public class BookingDto {
     private Integer id;
     private String statusId;
-    private UserDto user;
-    private Integer patientId;
+    private UserDto doctor;
+    private UserDto patient;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private String timeType;
+    private AllCodesDto timeType;
     private String timeBooking;
     private LocalDateTime createdAt;
     private String imageRemedy;
@@ -38,8 +33,7 @@ public class BookingDto {
     private String patientAddress;
     @NotBlank
     private String patientReason;
-    @NotBlank
-    private String patientGender;
+    private AllCodesDto patientGender;
     private LocalDate patientBirthday;
     private String email;
     private String verifyBooking;

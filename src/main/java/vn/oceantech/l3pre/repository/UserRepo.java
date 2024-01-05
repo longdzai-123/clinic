@@ -13,8 +13,8 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 
     boolean existsById(int id);
 
-    @Query("SELECT u.id FROM User as u WHERE u.email = :email")
-    int getPatientIdByEmail(String email);
+    @Query("SELECT u FROM User as u WHERE u.email = :email")
+    User getPatientIdByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.roleId = 'R2' ")
     List<User> getAllDoctor();
