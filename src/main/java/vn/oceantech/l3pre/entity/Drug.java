@@ -18,10 +18,17 @@ public class Drug {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "name")
     private String name;
+
+    @OneToOne
+    @JoinColumn(name = "unit", referencedColumnName = "id")
+    private UnitDrug unit;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

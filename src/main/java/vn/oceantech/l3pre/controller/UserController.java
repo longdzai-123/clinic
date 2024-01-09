@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.oceantech.l3pre.common.Response;
 import vn.oceantech.l3pre.dto.UserDto;
-import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.dto.UserProDto;
+import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.security.JwtTokenProvider;
 import vn.oceantech.l3pre.service.ProcedureService.UserServiceProcedure;
 import vn.oceantech.l3pre.service.UserService;
@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Response<String> login(@RequestParam("email") String email,
-                                 @RequestParam("password") String password) {
+                                  @RequestParam("password") String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
             return Response.buildResponse(jwtTokenProvider.createToken(email));
@@ -37,11 +37,11 @@ public class UserController {
     }
 
     @PostMapping("/login-system")
-    public Response<UserProDto> loginSystem(@RequestParam("email") String email,
-                                            @RequestParam("password") String password) {
+    public Response<UserDto> loginSystem(@RequestParam("email") String email,
+                                         @RequestParam("password") String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            return Response.buildResponse(userServiceProcedure.getUserSimpleByEmail(email));
+            return Response.buildResponse(userService.getByEmail(email));
         } catch (AuthenticationException e) {
             return Response.buildResponse(ErrorMessage.FORBIDDEN);
         }

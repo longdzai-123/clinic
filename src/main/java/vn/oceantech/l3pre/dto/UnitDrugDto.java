@@ -9,16 +9,12 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllCodesDto {
+public class UnitDrugDto {
     private Integer id;
-    private String keyMap;
-    private String type;
-    private String valueEn;
-    private String valueVi;
-    private String value;
 
-    public AllCodesDto(String valueEn, String valueVi) {
-        this.valueEn = valueEn;
-        this.valueVi = valueVi;
-    }
+    private String keyMap;
+
+    private String valueVi;
+
+    private String valueEn;
 }

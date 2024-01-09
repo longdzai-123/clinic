@@ -15,11 +15,10 @@ public class BookingValidator {
     private final BookingRepo bookingRepo;
 
     public void checkDuplicateBooking(Booking booking) {
-        int result = bookingRepo.checkDuplicateBooking(booking.getUser().getId(),
-                booking.getDate(), booking.getPatientId(), booking.getTimeType());
+        int result = bookingRepo.checkDuplicateBooking(booking.getDoctor().getId(),
+                booking.getDate(), booking.getPatient().getId(), booking.getTimeType());
         if (result == 1) {
             throw new DuplicateException(ErrorMessage.DUPLICATE_BOOKING);
         }
-
     }
 }

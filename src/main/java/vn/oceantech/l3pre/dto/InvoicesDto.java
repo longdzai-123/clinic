@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.oceantech.l3pre.entity.Remedy;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +16,10 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InvoicesDto {
     private Integer id;
-    private Integer doctorId;
-    private Integer patientId;
-    private Integer specialtyId;
+    private UserDto doctor;
+    private UserDto patient;
+    private RemedyDto remedy;
+    private SpecialtyDto specialty;
     private Integer totalCost;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

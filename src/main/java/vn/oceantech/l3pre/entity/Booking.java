@@ -27,10 +27,11 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    private User user;
+    private User doctor;
 
-    @Column(name = "patient_id")
-    private Integer patientId;
+    @ManyToOne
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    private User patient;
 
     @Column(name = "date")
     private LocalDate date;

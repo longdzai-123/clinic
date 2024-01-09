@@ -9,4 +9,7 @@ import java.util.List;
 public interface AllCodesRepo extends JpaRepository<AllCodes, Integer> {
     @Query("SELECT a FROM AllCodes a WHERE a.type=:type")
     List<AllCodes> getAllCodeByType(String type);
+
+    @Query("SELECT a FROM AllCodes a WHERE a.keyMap=:keyMap")
+    AllCodes getByKeyMap(String keyMap);
 }

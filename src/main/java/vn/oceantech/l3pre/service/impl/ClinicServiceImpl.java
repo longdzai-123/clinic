@@ -13,6 +13,7 @@ import vn.oceantech.l3pre.service.ClinicService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,20 @@ public class ClinicServiceImpl implements ClinicService {
     public ClinicDto getById(int id) {
         Clinic clinic = clinicRepo.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_CLINIC));
         return new ModelMapper().map(clinic, ClinicDto.class);
+    }
+
+    @Override
+    public List<ClinicDto> getAllByLimit(Integer limit) {
+        if (Objects.isNull(limit)) {
+            limit = 10;
+        }
+        List<Clinic> clinics = clinicRepo.getAllByLimit(limit);
+        List<ClinicDto> clinicDtos = new ArrayList<>();
+        for (Clinic clinic : clinics) {
+            ClinicDto clinicDto = new ModelMapper().map(clinic, ClinicDto.class);
+            clinicDtos.add(clinicDto);
+        }
+        return clinicDtos;
     }
 
     @Override
