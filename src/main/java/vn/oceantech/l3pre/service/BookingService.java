@@ -13,4 +13,6 @@ public interface BookingService {
     BookingDto confirmBooking(String token, Integer doctorId);
 
     List<BookingDto> getPatientByDoctorAndDate(int doctorId, LocalDate Date);
+
+    BookingDto getById(int id);
 }

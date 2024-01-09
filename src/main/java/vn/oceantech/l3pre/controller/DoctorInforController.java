@@ -49,10 +49,10 @@ public class DoctorInforController {
     }
 
 
-//    @GetMapping("/getBy/{id}")
-//    public Response<DoctorInformationDto> getByDoctorId(@PathVariable("id") int doctorId){
-//        return Response.buildResponse(doctorInforService.getByDoctorId(doctorId));
-//    }
+    @GetMapping("/get-by/{id}")
+    public Response<DoctorInformationDto> getByDoctorId(@PathVariable("id") int doctorId) {
+        return Response.buildResponse(doctorInforService.getByDoctorId(doctorId));
+    }
 
 
 }

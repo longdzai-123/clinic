@@ -1,23 +1,36 @@
 package vn.oceantech.l3pre.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "invoices")
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "doctor_id")
-    private Integer doctorId;
-    @Column(name = "patient_id")
-    private Integer patientId;
-    @Column(name = "specialty_id")
-    private Integer specialtyId;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id",referencedColumnName = "id")
+    private User doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id",referencedColumnName = "id")
+    private User patient;
+
+    @OneToOne
+    @JoinColumn(name = "remedy_id",referencedColumnName = "id")
+    private Remedy remedy;
+
+    @ManyToOne
+    @JoinColumn(name = "specialty_id",referencedColumnName = "id")
+    private Specialty specialty;
+
     @Column(name = "total_cost")
     private Integer totalCost;
     @Column(name = "created_at")

@@ -94,8 +94,13 @@ public class BookingServiceImpl implements BookingService {
         if (bookingDto.getPatientBirthday() != null) {
             booking.setPatientBirthday(bookingDto.getPatientBirthday());
         }
+        if (bookingDto.getImageRemedy() != null) {
+            booking.setImageRemedy(bookingDto.getImageRemedy());
+        }
         bookingRepo.save(booking);
-        return new ModelMapper().map(booking, BookingDto.class);
+        BookingDto bookingDtoRes = new BookingDto();
+        this.mapEntityToDto(booking, bookingDtoRes);
+        return bookingDtoRes;
     }
 
     @Override
@@ -106,7 +111,7 @@ public class BookingServiceImpl implements BookingService {
                 booking.setStatusId("S2");
                 bookingRepo.save(booking);
                 BookingDto bookingDto = new BookingDto();
-                this.mapEntityToDto(booking,bookingDto);
+                this.mapEntityToDto(booking, bookingDto);
                 return bookingDto;
             } else {
                 throw new ConfirmBookingException(ErrorMessage.CONFIRM_BOOKING_ERROR);
@@ -126,6 +131,14 @@ public class BookingServiceImpl implements BookingService {
             bookingDtos.add(bookingDto);
         }
         return bookingDtos;
+    }
+
+    @Override
+    public BookingDto getById(int id) {
+        Booking booking = bookingRepo.getById(id);
+        BookingDto bookingDto = new BookingDto();
+        this.mapEntityToDto(booking, bookingDto);
+        return bookingDto;
     }
 
     private void mapDtoToEntity(BookingDto bookingDto, Booking booking) {
@@ -154,7 +167,7 @@ public class BookingServiceImpl implements BookingService {
 
     private void mapEntityToDto(Booking booking, BookingDto bookingDto) {
         bookingDto.setId(booking.getId());
-        bookingDto.setStatusId(bookingDto.getStatusId());
+        bookingDto.setStatusId(booking.getStatusId());
 
         UserDto doctor = new ModelMapper().map(booking.getDoctor(), UserDto.class);
         bookingDto.setDoctor(doctor);

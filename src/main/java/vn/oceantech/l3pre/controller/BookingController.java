@@ -37,4 +37,9 @@ public class BookingController {
                                                                 @RequestParam("doctorId") Integer doctorId) {
         return Response.buildResponse(bookingService.getPatientByDoctorAndDate(doctorId, date));
     }
+
+    @GetMapping("/{id}")
+    public Response<BookingDto> getById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(bookingService.getById(id));
+    }
 }

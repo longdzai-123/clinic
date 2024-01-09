@@ -9,6 +9,9 @@ import java.util.List;
 public interface UserRepo extends JpaRepository<User, Integer> {
     User getById(int id);
 
+    @Query("SELECT u FROM User as u WHERE u.email = :email")
+    User getByEmail(String email);
+
     boolean existsByEmail(String email);
 
     boolean existsById(int id);

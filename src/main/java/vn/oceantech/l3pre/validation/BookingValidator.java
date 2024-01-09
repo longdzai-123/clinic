@@ -20,6 +20,5 @@ public class BookingValidator {
         if (result == 1) {
             throw new DuplicateException(ErrorMessage.DUPLICATE_BOOKING);
         }
-
     }
 }

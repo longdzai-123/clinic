@@ -9,6 +9,8 @@ import vn.oceantech.l3pre.repository.DrugRepo;
 import vn.oceantech.l3pre.service.DrugService;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,12 @@ public class DrugServiceImpl implements DrugService {
         drugDto.setId(drug.getId());
         drugDto.setCreatedAt(drug.getCreatedAt());
         return drugDto;
+    }
+
+    @Override
+    public List<DrugDto> search(String keyWord) {
+        List<Drug> drugs = drugRepo.search(keyWord);
+        return drugs.stream().map(drug -> new ModelMapper().map(drug, DrugDto.class)).collect(Collectors.toList());
     }
 
 

@@ -24,6 +24,8 @@ public interface BookingRepo extends JpaRepository<Booking, Integer> {
 
     @Query(value = "SELECT * FROM bookings as b WHERE b.doctor_id = :doctorId" +
             " AND b.date= :date" +
-            " AND b.status_id ='S2'", nativeQuery = true)
+            " AND (b.status_id ='S2' OR b.status_id ='S3')", nativeQuery = true)
     List<Booking> getPatientByDoctorAndDate(int doctorId, LocalDate date);
+
+
 }

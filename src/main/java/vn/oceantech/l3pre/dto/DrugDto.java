@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.oceantech.l3pre.entity.UnitDrug;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class DrugDto {
     private Integer id;
     private String name;
+    private UnitDrugDto unit;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

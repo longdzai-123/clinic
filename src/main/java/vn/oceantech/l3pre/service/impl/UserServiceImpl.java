@@ -44,4 +44,12 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(user -> new ModelMapper()
                 .map(user, UserDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public UserDto getByEmail(String email) {
+        User user = userRepo.getByEmail(email);
+        UserDto userDto = new ModelMapper().map(user, UserDto.class);
+        userDto.setImage(userDto.getImage());
+        return userDto;
+    }
 }
