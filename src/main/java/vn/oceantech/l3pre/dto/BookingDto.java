@@ -25,6 +25,7 @@ public class BookingDto {
     private String timeBooking;
     private LocalDateTime createdAt;
     private String imageRemedy;
+    private Boolean isRemedy;
     @NotBlank
     private String patientName;
     @NotBlank

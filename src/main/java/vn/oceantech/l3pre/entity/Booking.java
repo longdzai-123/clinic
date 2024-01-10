@@ -45,6 +45,9 @@ public class Booking {
     @Column(name = "image_remedy")
     private String imageRemedy;
 
+    @Column(name = "is_remedy")
+    private Boolean isRemedy;
+
     @Column(name = "patient_name")
     private String patientName;
 
