@@ -34,7 +34,7 @@ public class Remedy {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User doctor;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     private Booking booking;
 

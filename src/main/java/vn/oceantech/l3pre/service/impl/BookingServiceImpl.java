@@ -97,6 +97,9 @@ public class BookingServiceImpl implements BookingService {
         if (bookingDto.getImageRemedy() != null) {
             booking.setImageRemedy(bookingDto.getImageRemedy());
         }
+        if (bookingDto.getIsRemedy() != null) {
+            booking.setIsRemedy(bookingDto.getIsRemedy());
+        }
         bookingRepo.save(booking);
         BookingDto bookingDtoRes = new BookingDto();
         this.mapEntityToDto(booking, bookingDtoRes);
@@ -159,6 +162,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setPatientPhoneNumber(bookingDto.getPatientPhoneNumber());
         booking.setPatientAddress(bookingDto.getPatientAddress());
         booking.setPatientReason(bookingDto.getPatientReason());
+        booking.setIsRemedy(bookingDto.getIsRemedy());
         if (bookingDto.getTimeType() != null) {
             booking.setPatientGender(bookingDto.getPatientGender().getKeyMap());
         }
@@ -185,6 +189,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDto.setPatientPhoneNumber(booking.getPatientPhoneNumber());
         bookingDto.setPatientAddress(booking.getPatientAddress());
         bookingDto.setPatientReason(booking.getPatientReason());
+        bookingDto.setIsRemedy(booking.getIsRemedy());
 
         AllCodesDto patientGender = new ModelMapper().map(allCodesRepo.getByKeyMap(booking.getPatientGender()), AllCodesDto.class);
         bookingDto.setPatientGender(patientGender);
