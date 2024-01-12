@@ -17,7 +17,6 @@ public class UserDto {
 
     private String email;
 
-    @JsonIgnore
     private String password;
 
     private String firstName;
@@ -43,4 +42,6 @@ public class UserDto {
     private Integer totalCost;
 
     private Integer totalRevenue;
+
+    private Boolean isActive;
 }

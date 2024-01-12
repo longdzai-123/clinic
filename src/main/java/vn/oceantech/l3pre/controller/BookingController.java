@@ -32,6 +32,11 @@ public class BookingController {
         return Response.buildResponse(bookingService.confirmBooking(token, doctorId));
     }
 
+    @DeleteMapping("/{id}")
+    public Response<Boolean> deleteById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(bookingService.deleteById(id));
+    }
+
     @GetMapping
     public Response<List<BookingDto>> getPatientByDoctorAndDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
                                                                 @RequestParam("doctorId") Integer doctorId) {

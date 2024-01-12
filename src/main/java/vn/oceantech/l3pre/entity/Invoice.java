@@ -16,25 +16,31 @@ public class Invoice {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id",referencedColumnName = "id")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id",referencedColumnName = "id")
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User patient;
 
     @OneToOne
-    @JoinColumn(name = "remedy_id",referencedColumnName = "id")
+    @JoinColumn(name = "remedy_id", referencedColumnName = "id")
     private Remedy remedy;
 
     @ManyToOne
-    @JoinColumn(name = "specialty_id",referencedColumnName = "id")
+    @JoinColumn(name = "specialty_id", referencedColumnName = "id")
     private Specialty specialty;
 
     @Column(name = "total_cost")
     private Integer totalCost;
+
+    @Column(name = "is_pay")
+    private Boolean isPay;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 }

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingRepo extends JpaRepository<Booking, Integer> {
+    @Query(value = "SELECT b FROM Booking as b WHERE b.id = :id")
     Booking getById(int id);
 
     @Query(value = "SELECT b FROM Booking as b WHERE b.verifyBooking = :token")
@@ -26,6 +27,8 @@ public interface BookingRepo extends JpaRepository<Booking, Integer> {
             " AND b.date= :date" +
             " AND (b.status_id ='S2' OR b.status_id ='S3')", nativeQuery = true)
     List<Booking> getPatientByDoctorAndDate(int doctorId, LocalDate date);
+
+
 
 
 }

@@ -8,6 +8,10 @@ import vn.oceantech.l3pre.common.Response;
 
 @ControllerAdvice
 public class ProExceptionHandler {
+    @ExceptionHandler(ProException.class)
+    protected ResponseEntity<Object> handleDuplicateException(ProException proException) {
+        return new ResponseEntity<>(Response.buildResponse(proException.getErrorMessage()), HttpStatus.OK);
+    }
 
     @ExceptionHandler(DuplicateException.class)
     protected ResponseEntity<Object> handleDuplicateException(DuplicateException duplicateException) {

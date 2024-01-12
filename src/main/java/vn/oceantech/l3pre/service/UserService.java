@@ -7,10 +7,14 @@ import vn.oceantech.l3pre.entity.User;
 import java.util.List;
 
 public interface UserService {
-    UserDto create(UserDto userDto);
+    UserDto signUp(UserDto userDto);
     UserDto managerCreateUser(UserDto userDto);
 
     List<UserDto> getAllDoctorSimple();
 
     UserDto getByEmail(String email);
+
+    List<UserDto> getAllDoctorAndAdmin();
+
+    Boolean activeAccount(int doctorId);
 }

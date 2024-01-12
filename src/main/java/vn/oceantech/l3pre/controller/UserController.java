@@ -10,6 +10,7 @@ import vn.oceantech.l3pre.common.Response;
 import vn.oceantech.l3pre.dto.UserDto;
 import vn.oceantech.l3pre.dto.UserProDto;
 import vn.oceantech.l3pre.exception.ErrorMessage;
+import vn.oceantech.l3pre.exception.ProException;
 import vn.oceantech.l3pre.security.JwtTokenProvider;
 import vn.oceantech.l3pre.service.ProcedureService.UserServiceProcedure;
 import vn.oceantech.l3pre.service.UserService;
@@ -39,12 +40,18 @@ public class UserController {
     @PostMapping("/login-system")
     public Response<UserDto> loginSystem(@RequestParam("email") String email,
                                          @RequestParam("password") String password) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            return Response.buildResponse(userService.getByEmail(email));
-        } catch (AuthenticationException e) {
-            return Response.buildResponse(ErrorMessage.FORBIDDEN);
+
+        if (userService.getByEmail(email).getIsActive()) {
+            try {
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+                return Response.buildResponse(userService.getByEmail(email));
+            } catch (AuthenticationException e) {
+                return Response.buildResponse(ErrorMessage.FORBIDDEN);
+            }
+        } else {
+            throw new ProException(ErrorMessage.FORBIDDEN_ACTIVE);
         }
+
     }
 
     @PostMapping("/create")
@@ -62,6 +69,11 @@ public class UserController {
     @PostMapping("/manager-create")
     public Response<UserDto> managerCreateUser(@RequestBody UserDto userDTO) {
         return Response.buildResponse(userService.managerCreateUser(userDTO));
+    }
+
+    @PostMapping("/sign-up")
+    public Response<UserDto> signUp(@RequestBody UserDto userDTO) {
+        return Response.buildResponse(userService.signUp(userDTO));
     }
 
     @PutMapping("/manager-update")
@@ -83,5 +95,15 @@ public class UserController {
     @GetMapping("/all")
     public Response<List<UserProDto>> getAll() {
         return Response.buildResponse(userServiceProcedure.getAllUser());
+    }
+
+    @GetMapping("/all-doctor-admin")
+    public Response<List<UserDto>> getAllDoctorAndAdmin() {
+        return Response.buildResponse(userService.getAllDoctorAndAdmin());
+    }
+
+    @GetMapping("/active-account")
+    public Response<Boolean> activeAccount(Integer doctorId) {
+        return Response.buildResponse(userService.activeAccount(doctorId));
     }
 }

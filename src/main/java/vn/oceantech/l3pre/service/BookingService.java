@@ -10,6 +10,8 @@ public interface BookingService {
 
     BookingDto update(BookingDto bookingDto);
 
+    boolean deleteById(int id);
+
     BookingDto confirmBooking(String token, Integer doctorId);
 
     List<BookingDto> getPatientByDoctorAndDate(int doctorId, LocalDate Date);

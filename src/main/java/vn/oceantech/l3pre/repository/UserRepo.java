@@ -22,5 +22,8 @@ public interface UserRepo extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.roleId = 'R2' ")
     List<User> getAllDoctor();
 
+    @Query(value = "SELECT * FROM users u WHERE (u.role_id ='R2'or u.role_id ='R1')", nativeQuery = true)
+    List<User> getAllDoctorAndAdmin();
+
 
 }
