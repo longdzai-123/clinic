@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.oceantech.l3pre.entity.Remedy;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +13,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InvoicesDto {
+public class InvoiceDto {
     private Integer id;
     private UserDto doctor;
     private UserDto patient;
     private RemedyDto remedy;
+    private String time;
+    private Boolean isPay;
     private SpecialtyDto specialty;
     private Integer totalCost;
     private LocalDateTime createdAt;

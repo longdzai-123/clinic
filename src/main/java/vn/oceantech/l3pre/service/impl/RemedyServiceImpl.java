@@ -11,6 +11,7 @@ import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.exception.NotFoundException;
 import vn.oceantech.l3pre.repository.*;
 import vn.oceantech.l3pre.service.BookingService;
+import vn.oceantech.l3pre.service.InvoiceService;
 import vn.oceantech.l3pre.service.RemedyService;
 
 import java.util.ArrayList;
@@ -27,13 +28,21 @@ public class RemedyServiceImpl implements RemedyService {
     private final SendRemedy sendRemedy;
     private final UserRepo userRepo;
     private final RemedyDetailsRepo remedyDetailsRepo;
+    private final InvoiceService invoiceService;
 
     @Override
     @Transactional
     public RemedyDto create(RemedyDto remedyDto) {
-        Remedy remedy = new Remedy();
-        this.mapDtoToEntity(remedyDto, remedy);
-        remedyRepo.save(remedy);
+        Remedy remedy;
+        if (remedyRepo.getByBookingId(remedyDto.getBooking().getId()) != null) {
+            remedy = remedyRepo.getByBookingId(remedyDto.getBooking().getId());
+            invoiceService.createByRemedy(remedy);
+        } else {
+            remedy = new Remedy();
+            this.mapDtoToEntity(remedyDto, remedy);
+            remedyRepo.save(remedy);
+            invoiceService.createByRemedy(remedy);
+        }
         BookingDto bookingDto = new BookingDto();
         bookingDto.setId(remedyDto.getBooking().getId());
         bookingDto.setImageRemedy(remedyDto.getImage());
@@ -76,12 +85,33 @@ public class RemedyServiceImpl implements RemedyService {
             remedyRepo.save(remedy);
         }
         remedyDetailsRepo.deleteByRemedyId(remedyDto.getId());
-        for (RemedyDetailsDto remedyDetailsDto : remedyDto.getRemedyDetails()) {
-            RemedyDetails remedyDetails = new RemedyDetails();
-            this.mapRemedyDetailDtoToEntity(remedyDetailsDto, remedyDetails);
-            remedyDetails.setRemedy(remedy);
-            remedyDetailsRepo.save(remedyDetails);
+        if (remedyDto.getRemedyDetails() != null && remedyDto.getRemedyDetails().size() > 0) {
+            for (RemedyDetailsDto remedyDetailsDto : remedyDto.getRemedyDetails()) {
+                RemedyDetails remedyDetails = new RemedyDetails();
+                this.mapRemedyDetailDtoToEntity(remedyDetailsDto, remedyDetails);
+                remedyDetails.setRemedy(remedy);
+                remedyDetailsRepo.save(remedyDetails);
+            }
         }
+        RemedyDto remedyDto1 = new RemedyDto();
+        this.mapEntityToDto(remedy, remedyDto1);
+        return remedyDto1;
+    }
+
+    @Override
+    public RemedyDto updateRemedyImage(RemedyDto remedyDto) {
+        Booking booking = bookingRepo.getById(remedyDto.getBooking().getId());
+        Remedy remedy = remedyRepo.getByBookingId(remedyDto.getBooking().getId());
+        if (remedyDto.getImage() != null) {
+            remedy.setImage(remedyDto.getImage());
+            booking.setImageRemedy(remedyDto.getImage());
+            bookingRepo.save(booking);
+        }
+        if (remedyDto.getDescription() != null && remedyDto.getDescription() != "") {
+            remedy.setDescription(remedyDto.getDescription());
+        }
+        remedyRepo.save(remedy);
+        sendRemedy.sendRemedyImage(remedy);
         RemedyDto remedyDto1 = new RemedyDto();
         this.mapEntityToDto(remedy, remedyDto1);
         return remedyDto1;
@@ -89,9 +119,13 @@ public class RemedyServiceImpl implements RemedyService {
 
     private void mapDtoToEntity(RemedyDto remedyDto, Remedy remedy) {
         remedy.setDate(remedyDto.getDate());
-        remedy.setDescription(remedyDto.getDescription());
+        if (remedyDto.getDescription() != null) {
+            remedy.setDescription(remedyDto.getDescription());
+        }
         remedy.setEmail(remedyDto.getEmail());
-        remedy.setImage(remedyDto.getImage());
+        if (remedyDto.getImage() != null) {
+            remedy.setImage(remedyDto.getImage());
+        }
         remedy.setPhoneNumber(remedyDto.getPhoneNumber());
         remedy.setTimeType(remedyDto.getTimeType());
 

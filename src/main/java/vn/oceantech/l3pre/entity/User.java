@@ -1,5 +1,6 @@
 package vn.oceantech.l3pre.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,5 +44,8 @@ public class User {
     private Integer totalCost;
     @Column(name = "total_revenue")
     private Integer totalRevenue;
+    @Column(name = "is_active")
+    private Boolean isActive;
+
 
 }

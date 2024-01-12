@@ -22,6 +22,11 @@ public class RemedyController {
         return Response.buildResponse(remedyService.updateRemedyDetails(remedyDto));
     }
 
+    @PutMapping("/image")
+    public Response<RemedyDto> updateRemedyImage(@RequestBody RemedyDto remedyDto) {
+        return Response.buildResponse(remedyService.updateRemedyImage(remedyDto));
+    }
+
     @GetMapping
     public Response<RemedyDto> getByBookingId(@RequestParam("bookingId") Integer bookingId) {
         return Response.buildResponse(remedyService.getByBookingId(bookingId));

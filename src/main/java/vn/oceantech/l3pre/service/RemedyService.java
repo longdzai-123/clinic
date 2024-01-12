@@ -8,4 +8,6 @@ public interface RemedyService {
     RemedyDto getByBookingId(Integer bookingId);
 
     RemedyDto updateRemedyDetails(RemedyDto remedyDto);
+
+    RemedyDto updateRemedyImage(RemedyDto remedyDto);
 }

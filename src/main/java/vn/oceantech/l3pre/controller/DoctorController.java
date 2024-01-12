@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vn.oceantech.l3pre.common.Response;
 import vn.oceantech.l3pre.dto.Response.DoctorResponseDto;
-import vn.oceantech.l3pre.dto.UserDto;
 import vn.oceantech.l3pre.dto.UserProDto;
 import vn.oceantech.l3pre.service.DoctorInforService;
 import vn.oceantech.l3pre.service.ProcedureService.DoctorService;

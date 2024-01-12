@@ -107,6 +107,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public boolean deleteById(int id) {
+        bookingRepo.deleteById(id);
+        return true;
+    }
+
+    @Override
     public BookingDto confirmBooking(String token, Integer doctorId) {
         if (token != null && doctorId != null) {
             if (bookingRepo.existsByDoctorIdAndToken(token, doctorId) == 1) {
