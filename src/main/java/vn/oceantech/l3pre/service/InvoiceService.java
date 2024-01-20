@@ -13,4 +13,6 @@ public interface InvoiceService {
     List<InvoiceDto> getAllByDoctorId(int doctorId);
 
     InvoiceDto confirmPayment(int invoiceId);
+
+    List<InvoiceDto> searchByPatientName(String patientName);
 }

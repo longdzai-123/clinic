@@ -23,4 +23,20 @@ public class DrugController {
     public Response<List<DrugDto>> search(String keyWord) {
         return Response.buildResponse(drugService.search(keyWord));
     }
+
+    @GetMapping
+    public Response<List<DrugDto>> getAll() {
+        return Response.buildResponse(drugService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public Response<DrugDto> getById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(drugService.getById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public Response<Boolean> deleteById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(drugService.deleteById(id));
+    }
+
 }

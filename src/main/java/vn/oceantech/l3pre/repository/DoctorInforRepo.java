@@ -143,6 +143,7 @@ public interface DoctorInforRepo extends JpaRepository<DoctorInformation, Intege
             "LEFT JOIN specialties as s ON s.id = d.specialty_id " +
             "WHERE " +
             "u.role_id = 'R2' " +
+            "AND u.is_active= true " +
             "ORDER BY u.created_at DESC ", nativeQuery = true)
     List<TopDoctorPro> getAllDoctor();
 

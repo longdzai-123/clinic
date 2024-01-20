@@ -71,6 +71,18 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceDto;
     }
 
+    @Override
+    public List<InvoiceDto> searchByPatientName(String patientName) {
+        List<Invoice> invoices = invoiceRepo.searchByPatientName(patientName);
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            InvoiceDto invoiceDto = new InvoiceDto();
+            this.mapEntityToDto(invoice, invoiceDto);
+            invoiceDtos.add(invoiceDto);
+        }
+        return invoiceDtos;
+    }
+
     private void mapEntityToDto(Invoice invoice, InvoiceDto invoiceDto) {
         invoiceDto.setId(invoice.getId());
 

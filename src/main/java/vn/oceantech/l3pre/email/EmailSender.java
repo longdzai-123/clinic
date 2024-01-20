@@ -80,4 +80,38 @@ public class EmailSender {
     private String UrlConfirmBooking(String token, int doctorId) {
         return "http://localhost:3000/verify-booking?token=" + token + "&doctorId=" + doctorId;
     }
+
+    public void sendEmailBookingCancel(BookingDto bookingDto, String doctorName) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
+            helper.setTo(bookingDto.getEmail());
+            helper.setFrom("longdybala12345@gmail.com");
+            helper.setSubject("Lịch hẹn đã bị hủy");
+            helper.setText(
+                    "<html><head><style>" +
+                            "body { font-family: 'Arial', sans-serif; }" +
+                            ".container { max-width: 600px; margin: 0 auto; padding: 20px; }" +
+                            ".header { background-color: #3498db; color: #fff; text-align: center; padding: 10px; }" +
+                            ".content { margin-top: 20px; }" +
+                            ".footer { margin-top: 20px; text-align: center; }" +
+                            "</style></head><body>" +
+                            "<div class='container'>" +
+                            "<div class='header'><h2>Lịch hẹn đã bị hủy</h2></div>" +
+                            "<div class='content'>" +
+                            "<p>Xin chào " + bookingDto.getPatientName() + ",</p>" +
+                            "<p>Lịch hẹn của bạn với bác sỹ " + doctorName +
+                            " vào ngày " + bookingDto.getDate() +
+                            " lúc " + bookingDto.getTimeType().getValueVi() +
+                            " đã bị hủy. Nguyên nhân có thể là do bác sỹ bận hoặc đã vượt quá số lượng người khám trong khung giờ này.</p>" +
+                            "<p>Chúng tôi xin lỗi vì sự bất tiện này. Bạn vui lòng chọn một khung giờ khác hoặc liên hệ với chúng tôi để được hỗ trợ.</p>" +
+                            "</div>" +
+                            "<div class='footer'><p>Trân trọng,<br>Đội ngũ quản lý lịch hẹn</p></div>" +
+                            "</div></body></html>", true);
+            javaMailSender.send(message);
+            log.info("Send email cancel schedule a medical examination {} ", bookingDto.getEmail());
+        } catch (MessagingException e) {
+            log.error("Email sent with error: " + e.getMessage());
+        }
+    }
 }

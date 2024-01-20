@@ -23,8 +23,13 @@ public class InvoiceController {
     }
 
     @GetMapping("/confirm-payment")
-    public Response<InvoiceDto> confirmPayment(@NotNull Integer invoiceId){
+    public Response<InvoiceDto> confirmPayment(@NotNull Integer invoiceId) {
         return Response.buildResponse(invoiceService.confirmPayment(invoiceId));
+    }
+
+    @GetMapping("/search")
+    public Response<List<InvoiceDto>> searchByPatientName(String patientName) {
+        return Response.buildResponse(invoiceService.searchByPatientName(patientName));
     }
 
 }

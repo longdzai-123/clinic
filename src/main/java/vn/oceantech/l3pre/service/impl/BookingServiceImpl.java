@@ -11,6 +11,7 @@ import vn.oceantech.l3pre.entity.Booking;
 import vn.oceantech.l3pre.entity.User;
 import vn.oceantech.l3pre.exception.ConfirmBookingException;
 import vn.oceantech.l3pre.exception.ErrorMessage;
+import vn.oceantech.l3pre.exception.NotFoundException;
 import vn.oceantech.l3pre.repository.AllCodesRepo;
 import vn.oceantech.l3pre.repository.BookingRepo;
 import vn.oceantech.l3pre.repository.UserRepo;
@@ -108,7 +109,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean deleteById(int id) {
+        Booking booking = bookingRepo.findById(id).
+                orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_BOOKING));
         bookingRepo.deleteById(id);
+        BookingDto bookingDto = new BookingDto();
+        this.mapEntityToDto(booking, bookingDto);
+        User doctor = userRepo.getById(bookingDto.getDoctor().getId());
+        String doctorName = doctor.getLastName() + " " + doctor.getFirstName();
+        sendEmail.sendEmailBookingCancel(bookingDto, doctorName);
         return true;
     }
 
@@ -179,6 +187,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDto.setId(booking.getId());
         bookingDto.setStatusId(booking.getStatusId());
 
+
         UserDto doctor = new ModelMapper().map(booking.getDoctor(), UserDto.class);
         bookingDto.setDoctor(doctor);
 
@@ -200,5 +209,7 @@ public class BookingServiceImpl implements BookingService {
         AllCodesDto patientGender = new ModelMapper().map(allCodesRepo.getByKeyMap(booking.getPatientGender()), AllCodesDto.class);
         bookingDto.setPatientGender(patientGender);
         bookingDto.setPatientBirthday(booking.getPatientBirthday());
+
+        bookingDto.setEmail(booking.getPatient().getEmail());
     }
 }
