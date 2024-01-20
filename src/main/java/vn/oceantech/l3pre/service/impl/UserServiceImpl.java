@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         if (userDto.getPassword() != null) {
             userDto.setPassword(new BCryptPasswordEncoder(12).encode(userDto.getPassword()));
         }
+        userDto.setRoleId("R2");
         userDto.setIsActive(false);
         userDto.setCreatedAt(LocalDateTime.now());
         User user = new ModelMapper().map(userDto, User.class);

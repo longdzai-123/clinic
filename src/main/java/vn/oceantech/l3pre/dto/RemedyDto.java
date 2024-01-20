@@ -29,6 +29,8 @@ public class RemedyDto {
 
     private String description;
 
+    private String note;
+
     private String timeType;
 
     private LocalDate date;

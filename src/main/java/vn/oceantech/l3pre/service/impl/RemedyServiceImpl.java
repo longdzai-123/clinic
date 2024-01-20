@@ -60,8 +60,9 @@ public class RemedyServiceImpl implements RemedyService {
         if (remedyDto.getImage() != null) {
             sendRemedy.sendRemedyImage(remedyRepo.findById(remedy.getId()).orElseThrow(() ->
                     new NotFoundException(ErrorMessage.NOT_FOUND_REMEDY)));
+        } else {
+            sendRemedy.sendRemedy(remedy);
         }
-        sendRemedy.sendRemedy();
         return remedyDto;
     }
 
@@ -82,8 +83,12 @@ public class RemedyServiceImpl implements RemedyService {
                 orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_REMEDY));
         if (remedyDto.getDescription() != null) {
             remedy.setDescription(remedyDto.getDescription());
-            remedyRepo.save(remedy);
         }
+        if (remedyDto.getNote() != null) {
+            remedy.setNote(remedyDto.getNote());
+        }
+        remedyRepo.save(remedy);
+        sendRemedy.sendRemedy(remedy);
         remedyDetailsRepo.deleteByRemedyId(remedyDto.getId());
         if (remedyDto.getRemedyDetails() != null && remedyDto.getRemedyDetails().size() > 0) {
             for (RemedyDetailsDto remedyDetailsDto : remedyDto.getRemedyDetails()) {
@@ -107,8 +112,11 @@ public class RemedyServiceImpl implements RemedyService {
             booking.setImageRemedy(remedyDto.getImage());
             bookingRepo.save(booking);
         }
-        if (remedyDto.getDescription() != null && remedyDto.getDescription() != "") {
+        if (remedyDto.getDescription() != null && !Objects.equals(remedyDto.getDescription(), "")) {
             remedy.setDescription(remedyDto.getDescription());
+        }
+        if (remedyDto.getNote() != null && !Objects.equals(remedyDto.getNote(), "")) {
+            remedy.setNote(remedyDto.getNote());
         }
         remedyRepo.save(remedy);
         sendRemedy.sendRemedyImage(remedy);
@@ -121,6 +129,9 @@ public class RemedyServiceImpl implements RemedyService {
         remedy.setDate(remedyDto.getDate());
         if (remedyDto.getDescription() != null) {
             remedy.setDescription(remedyDto.getDescription());
+        }
+        if (remedyDto.getNote() != null) {
+            remedy.setNote(remedyDto.getNote());
         }
         remedy.setEmail(remedyDto.getEmail());
         if (remedyDto.getImage() != null) {
@@ -158,6 +169,7 @@ public class RemedyServiceImpl implements RemedyService {
         }
         remedyDto.setRemedyDetails(remedyDetailsDtos);
         remedyDto.setDescription(remedy.getDescription());
+        remedyDto.setNote(remedy.getNote());
         remedyDto.setTimeType(remedy.getTimeType());
         remedyDto.setDate(remedy.getDate());
 

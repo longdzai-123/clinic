@@ -8,4 +8,10 @@ public interface DrugService {
     DrugDto create(DrugDto drugDto);
 
     List<DrugDto> search(String keyWord);
+
+    List<DrugDto> getAll();
+
+    DrugDto getById(int id);
+
+    Boolean deleteById(int id);
 }

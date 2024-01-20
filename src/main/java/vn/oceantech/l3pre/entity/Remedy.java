@@ -44,6 +44,9 @@ public class Remedy {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "time_type")
     private String timeType;
 
