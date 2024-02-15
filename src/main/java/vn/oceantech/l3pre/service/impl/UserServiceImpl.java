@@ -54,6 +54,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto managerCreatePatient(UserDto userDto) {
+        userValidator.checkDuplicateEmail(userDto.getEmail());
+        if (userDto.getPassword() != null) {
+            userDto.setPassword(new BCryptPasswordEncoder(12).encode(userDto.getPassword()));
+        }
+        userDto.setIsActive(false);
+        userDto.setCreatedAt(LocalDateTime.now());
+        User user = new ModelMapper().map(userDto, User.class);
+        userRepo.save(user);
+        userDto.setId(user.getId());
+        return userDto;
+    }
+
+    @Override
     public List<UserDto> getAllDoctorSimple() {
         List<User> users = userRepo.getAllDoctor();
         return users.stream().map(user -> new ModelMapper()

@@ -29,6 +29,16 @@ public class ClinicController {
         return Response.buildResponse(clinicService.update(clinicDto));
     }
 
+    @DeleteMapping("/{id}")
+    public Response<Boolean> deleteById(@PathVariable("id") Integer id) {
+        return Response.buildResponse(clinicService.deleteById(id));
+    }
+
+    @GetMapping("/search")
+    public Response<List<ClinicDto>> search(String nameClinic, String nameAddress) {
+        return Response.buildResponse(clinicService.search(nameClinic, nameAddress));
+    }
+
     @GetMapping("/{id}")
     public Response<ClinicDto> getById(@PathVariable("id") Integer id) {
         return Response.buildResponse(clinicService.getById(id));

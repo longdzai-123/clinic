@@ -45,7 +45,7 @@ public class SpecialtyController {
     }
 
     @GetMapping("/search")
-    public Response<List<SpecialtyDto>> getById(@RequestParam("keyWord") String keyWord) {
+    public Response<List<SpecialtyDto>> search(@RequestParam("keyWord") String keyWord) {
         return Response.buildResponse(specialtyService.search(keyWord));
     }
 }

@@ -7,6 +7,7 @@ import vn.oceantech.l3pre.dto.ClinicDto;
 import vn.oceantech.l3pre.entity.Clinic;
 import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.exception.NotFoundException;
+import vn.oceantech.l3pre.exception.ProException;
 import vn.oceantech.l3pre.repository.ClinicRepo;
 import vn.oceantech.l3pre.service.ClinicService;
 
@@ -31,11 +32,22 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     public ClinicDto update(ClinicDto clinicDto) {
-        Clinic clinic = clinicRepo.findById(clinicDto.getId()).orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND_CLINIC));
+        Clinic clinic = clinicRepo.findById(clinicDto.getId()).orElseThrow(() ->
+                new NotFoundException(ErrorMessage.NOT_FOUND_CLINIC));
         clinicDto.setUpdatedAt(LocalDateTime.now());
         this.mapDtoToEntity(clinicDto, clinic);
         clinicRepo.save(clinic);
         return new ModelMapper().map(clinic, ClinicDto.class);
+    }
+
+    @Override
+    public Boolean deleteById(int id) {
+        Clinic clinic = clinicRepo.findById(id).
+                orElseThrow(() -> new ProException(ErrorMessage.NOT_FOUND_CLINIC));
+        if (Objects.nonNull(clinic)) {
+            clinicRepo.deleteById(id);
+        }
+        return true;
     }
 
     @Override
@@ -50,6 +62,17 @@ public class ClinicServiceImpl implements ClinicService {
             limit = 10;
         }
         List<Clinic> clinics = clinicRepo.getAllByLimit(limit);
+        List<ClinicDto> clinicDtos = new ArrayList<>();
+        for (Clinic clinic : clinics) {
+            ClinicDto clinicDto = new ModelMapper().map(clinic, ClinicDto.class);
+            clinicDtos.add(clinicDto);
+        }
+        return clinicDtos;
+    }
+
+    @Override
+    public List<ClinicDto> search(String nameClinic, String nameAddress) {
+        List<Clinic> clinics = clinicRepo.searchByNameAndAddress(nameClinic, nameAddress);
         List<ClinicDto> clinicDtos = new ArrayList<>();
         for (Clinic clinic : clinics) {
             ClinicDto clinicDto = new ModelMapper().map(clinic, ClinicDto.class);

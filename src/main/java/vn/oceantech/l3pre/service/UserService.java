@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserService {
     UserDto signUp(UserDto userDto);
     UserDto managerCreateUser(UserDto userDto);
+    UserDto managerCreatePatient(UserDto userDto);
+
 
     List<UserDto> getAllDoctorSimple();
 
