@@ -7,6 +7,8 @@ import java.util.List;
 public interface DrugService {
     DrugDto create(DrugDto drugDto);
 
+    DrugDto update(DrugDto drugDto);
+
     List<DrugDto> search(String keyWord);
 
     List<DrugDto> getAll();

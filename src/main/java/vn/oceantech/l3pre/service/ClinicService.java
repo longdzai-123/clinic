@@ -10,9 +10,13 @@ public interface ClinicService {
 
     ClinicDto update(ClinicDto clinicDto);
 
+    Boolean deleteById(int id);
+
     ClinicDto getById(int id);
 
     List<ClinicDto> getAll();
 
     List<ClinicDto> getAllByLimit(Integer limit);
+
+    List<ClinicDto> search(String nameClinic, String nameAddress);
 }

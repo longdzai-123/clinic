@@ -19,6 +19,11 @@ public class DrugController {
         return Response.buildResponse(drugService.create(drugDto));
     }
 
+    @PutMapping
+    public Response<DrugDto> update(@RequestBody DrugDto drugDto) {
+        return Response.buildResponse(drugService.update(drugDto));
+    }
+
     @GetMapping("/search")
     public Response<List<DrugDto>> search(String keyWord) {
         return Response.buildResponse(drugService.search(keyWord));

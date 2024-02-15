@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import vn.oceantech.l3pre.dto.DrugDto;
 import vn.oceantech.l3pre.entity.Drug;
+import vn.oceantech.l3pre.entity.UnitDrug;
 import vn.oceantech.l3pre.exception.ErrorMessage;
 import vn.oceantech.l3pre.exception.NotFoundException;
 import vn.oceantech.l3pre.repository.DrugRepo;
@@ -12,6 +13,7 @@ import vn.oceantech.l3pre.service.DrugService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,18 @@ public class DrugServiceImpl implements DrugService {
         drugDto.setId(drug.getId());
         drugDto.setCreatedAt(drug.getCreatedAt());
         return drugDto;
+    }
+
+    @Override
+    public DrugDto update(DrugDto drugDto) {
+        Drug drug = drugRepo.findById(drugDto.getId()).orElseThrow(() ->
+                new NotFoundException(ErrorMessage.NOT_FOUND_DRUG));
+        if (Objects.nonNull(drug)) {
+            drug.setName(drugDto.getName());
+            drug.setUnit(new ModelMapper().map(drugDto.getUnit(), UnitDrug.class));
+            drugRepo.save(drug);
+        }
+        return new ModelMapper().map(drug, DrugDto.class);
     }
 
     @Override

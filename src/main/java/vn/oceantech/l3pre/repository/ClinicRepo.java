@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.oceantech.l3pre.entity.Clinic;
-import vn.oceantech.l3pre.entity.Specialty;
 
 import java.util.List;
 
@@ -16,4 +15,8 @@ public interface ClinicRepo extends JpaRepository<Clinic, Integer> {
     List<Clinic> getAllByLimit(@Param("limit") int limit);
 
     Clinic getById(int id);
+
+    @Query(value = "SELECT * FROM clinics c WHERE c.name LIKE CONCAT('%',:nameClinic,'%') " +
+            "AND c.address LIKE CONCAT('%',:nameAddress,'%')", nativeQuery = true)
+    List<Clinic> searchByNameAndAddress(String nameClinic, String nameAddress);
 }

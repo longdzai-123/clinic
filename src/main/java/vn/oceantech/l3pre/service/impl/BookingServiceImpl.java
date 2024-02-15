@@ -43,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
             userDto.setEmail(bookingDto.getEmail());
             userDto.setRoleId("R3"); // set role patient
             userDto.setFirstName(bookingDto.getPatientName());
-            bookingDto.setPatient(userService.managerCreateUser(userDto));
+            bookingDto.setPatient(userService.managerCreatePatient(userDto));
         } else {
             User user = userRepo.getPatientIdByEmail(bookingDto.getEmail());
             UserDto userDto = new ModelMapper().map(user, UserDto.class);
